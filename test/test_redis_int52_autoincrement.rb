@@ -1,6 +1,7 @@
 # encoding: UTF-8
 # Author:: Andrew Chernuha chaky22222222@gmail.com
 # License:: MIT and/or Creative Commons Attribution-ShareAlike
+# run test with command: rake
 
 require 'test/unit'
 require 'rubygems'
