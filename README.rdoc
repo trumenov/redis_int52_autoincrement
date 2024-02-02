@@ -1,0 +1,60 @@
+= Int64 UUID (UInt52) autoincremented via redis-server
+
+Why UInt52? Becouse JavaScript have problems with usege of Int64 values, that less than UInt54 max value.
+So I create this library for be sure that migration to the UUID64 will not brake front side with rounding JavaScript bug.
+
+What bug? Please open in your browser console and put into it
+
+11111111111111111+2
+
+What you see? Yes! It is 11111111111111114.
+
+But it is not all. Please insert in this console 11111111111111111 and press enter. What you see? Yes, it is 11111111111111112.
+
+Why it happens: becouse JavaScript use Double for store and working with Integers. Yes, i know, it is really bad idea :(.
+
+So UInt54 is the maximum int that JavaScript can process without this bug.
+
+If you do not want search and fix all places in your project with this bug and you need UUID64 - use this lib.
+
+= What this gem provide:
+Generates universally unique identifiers (UUID52) with unsigned Int64 last 52 bits (so it will be UInt52)
+for use in distributed applications.
+Based on:
+1) possibility autoincrement value in redis-server
+2) unix timestamps with microseconds
+3) expire key possibility in redis database.
+4) this value UInt52 can be used by JavaScript without lags.
+
+
+== Generating UInt52 Ids
+
+Call #generate to generate a new UUID64. The method returns a Int64 unique value less than UINT52 max value.
+
+For example in rails:
+
+  before_create do |record|
+    record.id ||= RedisInt52Autoincrement.generate(Rails.cache.redis || Redis.new(url: "redis://localhost:6379/0"))
+  end
+
+== Why so hard?
+
+We have an issue where the servers have different times on each server and during the time the server syncs the time we have a shift of a few seconds.
+So this lib have +-50(UUID52_MAX_SECONDS_EXPIRE) seconds maximum for delta shift.
+
+== Latest and Greatest
+
+Source code and documentation hosted on Github: http://github.com/trumenov/redis_int52_autoincrement
+
+To get UUID52 from source:
+
+  git clone git://github.com/trumenov/redis_int52_autoincrement.git
+
+
+== License
+
+This package is licensed under the MIT license and/or the Creative
+Commons Attribution-ShareAlike.
+
+:include: MIT-LICENSE
+
