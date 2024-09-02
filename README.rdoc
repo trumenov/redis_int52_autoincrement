@@ -17,6 +17,7 @@ So UInt54 is the maximum int that JavaScript can process without this bug.
 
 If you do not want search and fix all places in your project with this bug and you need UUID64 - use this lib.
 
+
 = What this gem provide:
 Generates universally unique identifiers (UUID52) with unsigned Int64 last 52 bits (so it will be UInt52)
 for use in distributed applications.
