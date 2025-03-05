@@ -45,8 +45,13 @@ jobs:
         run: rake test
 
       - name: Testomatio Report
-        run: npx @testomatio/reporter xml "test/reports/**.xml" --lang=Ruby
-        if: always()
+        run: npx -p @testomatio/reporter report-xml "test/reports/**.xml" --lang=Ruby
+        if: |
+          ${{
+            always() &&
+            github.event_name == 'workflow_dispatch' &&
+            github.event.inputs.testomatio != ''
+          }}
         env:
           TESTOMATIO_URL: ${{ github.event.inputs.testomatio_url }}
           TESTOMATIO: ${{ github.event.inputs.testomatio }}
