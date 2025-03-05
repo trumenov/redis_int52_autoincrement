@@ -1,8 +1,6 @@
 name: RunTests
 
 on:
-  push:
-  pull_request:
   workflow_dispatch:
     inputs:
       grep:
@@ -26,12 +24,17 @@ jobs:
         ports:
           - 6379:6379
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    strategy:
+      matrix:
+        node-version: [18.x]
 
-      - name: Setup node
-        uses: actions/setup-node@v1
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -46,12 +49,7 @@ jobs:
 
       - name: Testomatio Report
         run: npx -p @testomatio/reporter report-xml "test/reports/**.xml" --lang=Ruby
-        if: |
-          ${{
-            always() &&
-            github.event_name == 'workflow_dispatch' &&
-            github.event.inputs.testomatio != ''
-          }}
+        if: always()
         env:
           TESTOMATIO_URL: ${{ github.event.inputs.testomatio_url }}
           TESTOMATIO: ${{ github.event.inputs.testomatio }}
