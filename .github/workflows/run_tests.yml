@@ -28,6 +28,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup node
+        uses: actions/setup-node@v1
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -38,3 +41,11 @@ jobs:
 
       - name: Run tests
         run: rake test
+
+      - name: Testomatio Report
+        run: npx @testomatio/reporter report-xml "test/reports/**.xml" --lang=Ruby
+        if: always()
+        env:
+          TESTOMATIO: ${{ secrets.TESTOMATIO }}
+          TESTOMATIO_RUN: 'PR ${{ github.event.number }} ${{ github.event.pull_request.title }}'
+          GH_PAT: ${{ github.token }}
