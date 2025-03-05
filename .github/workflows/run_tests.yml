@@ -46,7 +46,9 @@ jobs:
         run: npx @testomatio/reporter xml "test/reports/**.xml" --lang=Ruby
         if: always()
         env:
-          TESTOMATIO: ${{ secrets.TESTOMATIO }}
+          TESTOMATIO_URL: ${{ github.event.inputs.testomatio_url }}
+          TESTOMATIO: ${{ github.event.inputs.testomatio }}
+          TESTOMATIO_RUN: ${{ github.event.inputs.run }}
           TESTOMATIO_TITLE: "PR ${{ github.event.number }} ${{ github.event.pull_request.title }}"
           GH_PAT: ${{ github.token }}
           DEBUG: 1
