@@ -43,9 +43,11 @@ jobs:
         run: rake test
 
       - name: Testomatio Report
-        run: npx @testomatio/reporter report-xml "test/reports/**.xml" --lang=Ruby
+        run: npx @testomatio/reporter xml "test/reports/**.xml" --lang=Ruby
         if: always()
         env:
           TESTOMATIO: ${{ secrets.TESTOMATIO }}
-          TESTOMATIO_RUN: 'PR ${{ github.event.number }} ${{ github.event.pull_request.title }}'
+          TESTOMATIO_TITLE: "PR ${{ github.event.number }} ${{ github.event.pull_request.title }}"
           GH_PAT: ${{ github.token }}
+          DEBUG: 1
+

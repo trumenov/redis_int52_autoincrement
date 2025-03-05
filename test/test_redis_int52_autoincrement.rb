@@ -3,12 +3,10 @@
 # License:: MIT and/or Creative Commons Attribution-ShareAlike
 # run test with command: rake
 
-require 'test/unit'
-require 'rubygems'
+require_relative './test_helper.rb'
 require 'redis_int52_autoincrement'
-require "redis"
 
-class TestRedisInt52Autoincrement < Test::Unit::TestCase
+class TestRedisInt52Autoincrement < Minitest::Test
 
   def test_check_generated_placed_in_target_region
     redis = Redis.new(url: "redis://localhost:6379/0")

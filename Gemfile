@@ -8,4 +8,6 @@ end
 
 group :test do
   gem "redis"
+  gem 'minitest'
+  gem 'minitest-reporters'
 end

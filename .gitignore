@@ -2,3 +2,7 @@
 *.swp
 /html
 *.gem
+
+/test/reports/*
+!/test/reports/.keep
+
